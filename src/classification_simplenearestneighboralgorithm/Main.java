@@ -71,6 +71,13 @@ public class Main
             }
         }
         
+        List<Integer> wynik = c.resolveProblem();
+        
+        System.out.print("Wyniki klasyfikacji : ");
+        
+        for(int i=0;i<wynik.size();++i)
+            System.out.print(wynik.get(i));
+        
     }
 
     /**
