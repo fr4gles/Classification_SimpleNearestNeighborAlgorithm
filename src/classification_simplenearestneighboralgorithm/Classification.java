@@ -59,11 +59,8 @@ public class Classification
                     tmpLocalBest = localBest;
                     localBest = Math.min(localBest, countDistance(classList.get(classList.size()-1).points.get(k), classList.get(i).points.get(j)));
                     
-                    if(localBest.equals(tmpLocalBest))
-                    {
+                    if(!localBest.equals(tmpLocalBest))
                         localID = classList.get(i).Id;
-                        break;
-                    }
                 }
             }
             result.add(localID);
@@ -72,13 +69,11 @@ public class Classification
         return result;
     }
     
-    public Double countDistance(List<Integer> one, List<Integer> second)
+    public Double countDistance(List<Integer> first, List<Integer> second)
     {
         Double result = 0.0;
-        for(int i=0; i<one.size(); ++i)
-        {
-            result += Math.pow(second.get(i)-one.get(i),2);
-        }
+        for(int i=0; i<first.size(); ++i)
+            result += Math.pow(second.get(i)-first.get(i),2);
         return /*Math.abs*/Math.sqrt(result);
     }
 }
