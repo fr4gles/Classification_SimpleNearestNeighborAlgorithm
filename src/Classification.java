@@ -2,11 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package classification_simplenearestneighboralgorithm;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
 
 /**
  *
@@ -14,85 +13,126 @@ import java.util.List;
  */
 public class Classification
 {
-    public List<Class> classList;
-    
+
+    private List<ClassOfVector> classList;
+
     public Classification()
     {
         classList = new ArrayList<>();
     }
-    
-    public void addAndLearn(int id, List<Integer> list)
+
+    public void addAndLearn(int id, Vector list)
     {
-        Integer index = searchIn(id);
-        
-        if(index != -1)
+        int index = searchIn(id);
+
+        if (index != -1)
+        {
             classList.get(index).add(list);
+        }
         else
-            classList.add(new Class(id, list));
+        {
+            classList.add(new ClassOfVector(id, list));
+        }
     }
-    
+
     public Integer searchIn(int id)
     {
-        for(int i=0; i<classList.size(); ++i)
-            if(classList.get(i).Id == id)
+        for (int i = 0; i < classList.size(); ++i)
+        {
+            if (classList.get(i).getId() == id)
+            {
                 return i;
-        
+            }
+        }
+
         return -1;
     }
-    
+
     public List<Integer> resolveProblem()
     {
         List<Integer> result = new ArrayList<>();
-        
-        Double localBest;
-        Double tmpLocalBest;
-        Integer localID = 0;
-        
-        for(int k=0; k<classList.get(classList.size()-1).points.size(); ++k)
+
+        float localBest;
+        float tmpLocalBest;
+        int localID = 0;
+
+        for (Vector k : classList.get(classList.size() - 1).getPoints())
         {
-            localBest = Double.MAX_VALUE;
-            tmpLocalBest = 0.0;
-            for(int i=0; i<classList.size()-1; ++i)
+            localBest = Float.POSITIVE_INFINITY;
+            for (int i = 0; i < classList.size() - 1; ++i)
             {
-                for(int j=0; j<classList.get(i).points.size(); ++j)
+                for (Vector j : classList.get(i).getPoints())
                 {
                     tmpLocalBest = localBest;
-                    localBest = Math.min(localBest, countDistance(classList.get(classList.size()-1).points.get(k), classList.get(i).points.get(j)));
-                    
-                    if(!localBest.equals(tmpLocalBest))
-                        localID = classList.get(i).Id;
+                    localBest = Math.min(localBest, k.countDistanceTo(j));
+
+                    if (Math.abs(localBest - tmpLocalBest) > 0.0001f)
+                    {
+                        localID = classList.get(i).getId();
+                    }
                 }
             }
             result.add(localID);
         }
-        
+
         return result;
-    }
-    
-    public Double countDistance(List<Integer> first, List<Integer> second)
-    {
-        Double result = 0.0;
-        for(int i=0; i<first.size(); ++i)
-            result += Math.pow(second.get(i)-first.get(i),2);
-        return /*Math.abs*/Math.sqrt(result);
     }
 }
 
-class Class
+final class ClassOfVector
 {
-    public List<List<Integer>> points;
-    public Integer Id;
-    
-    public Class(Integer id, List<Integer> p)
+
+    private List<Vector> points;
+    private Integer Id;
+
+    public ClassOfVector(Integer id, Vector p)
     {
         points = new ArrayList<>();
-        
+
         this.Id = id;
         add(p);
     }
-    
-    public void add(List<Integer> p)
+
+    public void add(Vector p)
     {
-        points.add(p);
+        getPoints().add(p);
+    }
+
+    /**
+     * @return the points
+     */
+    public List<Vector> getPoints()
+    {
+        return points;
+    }
+
+    /**
+     * @return the Id
+     */
+    public Integer getId()
+    {
+        return Id;
+    }
+}
+
+class Vector
+{
+
+    private int[] point;
+
+    Vector(int[] p)
+    {
+        point = new int[p.length];
+        point = p.clone();
+    }
+
+    public float countDistanceTo(Vector p)
+    {
+        float result = 0.0f;
+        for (int i = 0; i < this.point.length; ++i)
+        {
+            result += (p.point[i] - this.point[i]) * (p.point[i] - this.point[i]);//Math.pow(second.get(i)-first.get(i),2);
+        }
+        return /*Math.abs*/ (float) Math.sqrt(result);
     }
 }
