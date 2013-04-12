@@ -1,10 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -115,12 +110,12 @@ final class ClassOfVector
     }
 }
 
-class Vector
+final class Vector
 {
 
     private int[] point;
 
-    Vector(int[] p)
+    public Vector(int[] p)
     {
         point = new int[p.length];
         point = p.clone();
