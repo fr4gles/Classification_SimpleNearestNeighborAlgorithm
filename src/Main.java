@@ -1,3 +1,4 @@
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -5,25 +6,37 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
+ * Glowna klasa programu.
  *
  * @author Michal
+ * @date 13.04.2013
  */
 public class Main
 {
 
+    /**
+     * Jest to liczba podana na wejsciu - size
+     */
     private static int LicabaElementow = 0;
-    private static Boolean TEST = Boolean.FALSE;
 
+    /**
+     * Glowna funkcja programu - rozpoczyna dzialanie.
+     *
+     * @param args
+     */
     public static void main(String[] args)
     {
-        readNSize(args);
+        readNSize(args); // wczytanie rozmiaru
 
         Classification c = new Classification();
 
-        readFile(args, c);
+        readFile(args, c); // wczytanie danych z pliku
 
-        List<Integer> result = c.resolveProblem();
+        List<Integer> result = c.resolveProblem();  // rozwiazanie problemu
 
+        /*
+         * Wypis wyniku
+         */
         System.out.print("Wyniki klasyfikacji : ");
 
         for (int i = 0; i < result.size(); ++i)
@@ -50,13 +63,12 @@ public class Main
     }
 
     /**
-     * @return the TEST
+     * Wczytywanie danych z pliku. Podczas wczytywania funkcja rozpoczyna etap
+     * nauki
+     *
+     * @param args argumenty wejscowe
+     * @param c obiekt klasy, klasyfikujacy
      */
-    public static Boolean getTEST()
-    {
-        return TEST;
-    }
-
     private static void readFile(String[] args, Classification c)
     {
         int tmpId;
@@ -73,7 +85,7 @@ public class Main
                 {
                     tmpPointList[i] = sc.nextInt();
                 }
-                c.addAndLearn(tmpId, new Vector(tmpPointList));
+                c.addAndLearn(tmpId, new Vector(tmpPointList)); // rozpoczecie etapu nauki
             }
         }
         catch (FileNotFoundException ex)
@@ -82,13 +94,15 @@ public class Main
         }
         catch (NoSuchElementException ex)
         {
-            if (Main.getTEST())
-            {
-                System.err.println("BLAD ZLY FORMAT KRAWEDZI -> " + ex.getMessage());
-            }
+            System.err.println("BLAD ZLY FORMAT PLIKU WEJSCIOWEGO, CZY ABY NA PEWNO N_SIZE JEST OK? -> " + ex.getMessage());
         }
     }
 
+    /**
+     * Wczytanie z wejscia rozmiaru - size
+     *
+     * @param args argumenty wejsciowe
+     */
     private static void readNSize(String[] args)
     {
         if (args.length < 2) // jesli zla ilosc argumentow wejsciowych to poinforuj o tym uzytkownika
