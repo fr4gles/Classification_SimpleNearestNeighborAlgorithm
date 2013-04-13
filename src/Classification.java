@@ -103,7 +103,10 @@ public class Classification
             {
                 tmpLocalBest = localBest;
                 localBest = Math.min(localBest, k.countDistanceTo(j));
-                localID = updateBestClassID(localBest, tmpLocalBest, localID, i);
+                localID = updateBestClassID(localBest,
+                                            tmpLocalBest,
+                                            localID,
+                                            i);
             }
         }
         result.add(localID);
@@ -119,7 +122,10 @@ public class Classification
      * @param i numer potrzebny do odczytani poprawnych danych z listy klas
      * @return ID zakwalifikowanej klasy
      */
-    private int updateBestClassID(float localBest, float tmpLocalBest, int localID, int i)
+    private int updateBestClassID(float localBest,
+                                  float tmpLocalBest,
+                                  int localID,
+                                  int i)
     {
         if (Math.abs(localBest - tmpLocalBest) > 0.0001f)
         {
@@ -130,15 +136,30 @@ public class Classification
 }
 
 /**
+ * Klasa klasyfikacji wektora Podczas wczytywania danych oraz pozniejszej nauki
+ * do jednej klasy podawane są id oraz tablica punktow n wymiarowych
  *
  * @author Michal
+ * @date 13.04.2013
  */
 final class ClassOfVector
 {
 
+    /**
+     * Lista vektorow n wymiarowych
+     */
     private List<Vector> points;
+    /**
+     * Id klasy
+     */
     private Integer Id;
 
+    /**
+     * Publiczny konstrktor inicjalizyjacy
+     *
+     * @param id id klasy
+     * @param p vektor n wymiarowy
+     */
     public ClassOfVector(Integer id, Vector p)
     {
         points = new ArrayList<>();
@@ -147,6 +168,11 @@ final class ClassOfVector
         add(p);
     }
 
+    /**
+     * Funkcja dodajaca wektor do listy wektorow
+     *
+     * @param p
+     */
     public void add(Vector p)
     {
         getPoints().add(p);
@@ -169,17 +195,38 @@ final class ClassOfVector
     }
 }
 
+/**
+ * Klasa przechowujaca dane na temat wczytanych z pliku wektorow n wymoarowych.
+ * M.in. przechowuje: wspolrzedne wektora, pozwala na obliczenie odlegosci
+ *
+ * @author Michal
+ * @date 13.04.2013
+ */
 final class Vector
 {
 
+    /**
+     * tablica, lista punktow tworzacych n wymiarowy wektor
+     */
     private int[] point;
 
+    /**
+     * publiczny konstryktor
+     *
+     * @param p tablica, lista punktow tworzacych n wymiarowy wektor
+     */
     public Vector(int[] p)
     {
         point = new int[p.length];
         point = p.clone();
     }
 
+    /**
+     * Funkcja obliczajaca odleglosc pomiedzy danym a zadanym wektorem
+     *
+     * @param p zadany wektor
+     * @return odleglosc
+     */
     public float countDistanceTo(Vector p)
     {
         float result = 0.0f;
