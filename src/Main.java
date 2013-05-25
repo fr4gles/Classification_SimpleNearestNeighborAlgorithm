@@ -76,7 +76,7 @@ public class Main
         File file = new File(args[0]); // użycie pliku wejsciowego do odczytu danych
         try
         {
-            Scanner sc = new Scanner(file).useDelimiter("\\D+"); // pobieranie tylko liczb ...
+            Scanner sc = new Scanner(file)/*.useDelimiter("\\D+")*/; // pobieranie tylko liczb ...
             while (sc.hasNext())
             {
                 tmpId = sc.nextInt();
